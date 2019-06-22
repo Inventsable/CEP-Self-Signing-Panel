@@ -28,7 +28,11 @@
 
 This creates a command named `sign`, which will be used as `npm run sign`. It uses [make-runnable](https://github.com/super-cache-money/make-runnable) to allow a `node [path-to-file] [name-of-function] [parameters-to-pass]` syntax, so the above `node ./src/utils/signAndCertify.js init` is pointing to a function named `init()` (with no parameters) inside the `signAndCertify.js` file.
 
-### 3. Copy the `signAndCertify.js` file from this repo to the same path as your command above
+### 3. Copy [the signAndCertify.js file from this repo](https://github.com/Inventsable/CEP-Self-Signing-Panel/blob/master/src/utils/signAndCertify.js) to the same path as your command above
+
+### 4. You must have ZXPSignCmd.exe within the parent folder of your extension
+
+If you're currently developing a panel whose path is `.../appData/Roaming/Adobe/CEP/extensions/myPanel`, ZXPSignCmd.exe must be in `.../appData/Roaming/Adobe/CEP/extensions`.
 
 ```bash
 # Now re-run npm install
@@ -37,3 +41,14 @@ npm install
 # Now try your new task
 npm run sign
 ```
+
+## What does it do?
+
+### This command will:
+
+- Duplicate and "stage" an extension folder to a temporary location, removing any hidden files or folders to ensure the certificate doesn't silently fail.
+- Generate a temporary certificate
+- Sign the duplicate with the certificate
+- Check the validation of the signed duplicate
+- Place the resulting `[name][version].zxp` into `./archive` (and create if it doesn't already exist)
+- Delete the duplicate
