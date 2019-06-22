@@ -62,3 +62,5 @@ npm run sign
 - Prompt the user if they'd like to switch contexts.
 - If switching contexts, automatically adjusts `manifest.xml` for you (no need to manually open it and switch every time)
 - Prompt with contextual information about the next steps once the confirmation is made.
+
+![](https://thumbs.gfycat.com/WetCrazyGuppy-size_restricted.gif)
