@@ -52,5 +52,5 @@ npm run sign
 - Generate a temporary certificate
 - Sign the duplicate with the certificate
 - Check the validation of the signed duplicate
-- Place the resulting `[name][version].zxp` into `./archive` of your current panel (and create this folder if it doesn't already exist)
-- Delete the duplicate
+- Place the resulting `[name][version].zxp` into `./archive` of your current panel (and create this folder if it doesn't already exist). If `[name][version].zxp` already exists, overwrite it.
+- Delete the duplicate directory
