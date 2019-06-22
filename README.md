@@ -31,7 +31,7 @@ This creates a command named `sign`, which will be used as `npm run sign`. It us
 
 > You can see the above in action within [this repo's own package.json](https://github.com/Inventsable/CEP-Self-Signing-Panel/blob/master/package.json)
 
-### 3. Copy [the ./src/utils/dev folder from this repo](https://github.com/Inventsable/CEP-Self-Signing-Panel/blob/master/src/utils/signAndCertify.js) to the same path (or adjust for your own paths)
+### 3. Copy [the ./src/utils/dev folder from this repo](https://github.com/Inventsable/CEP-Self-Signing-Panel/tree/master/src/utils/dev) to the same path (or copy files and adjust package.json for your own paths)
 
 ### 4. You must have ZXPSignCmd.exe within the parent folder of your extension
 
