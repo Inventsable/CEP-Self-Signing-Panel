@@ -7,7 +7,7 @@
 
 ## Adding this functionality to your own panel
 
-### 1. Copy and paste the following into your `package.json` under `dependencies`:
+### 1. Copy and paste the following into your `package.json` under `devDependencies`:
 
 ```json
     "boxen": "^4.1.0",
@@ -20,17 +20,18 @@
     "shelljs": "^0.8.3",
 ```
 
-### 2. Let's create a custom task by pasting this into your `scripts` section of the `package.json`:
+### 2. We create custom tasks by pasting this into the `scripts` section of your `package.json`:
 
 ```json
-    "sign": "node ./src/utils/signAndCertify.js init"
+    "sign": "node ./src/utils/dev/signAndCertify.js init",
+    "switch": "node ./src/utils/dev/switchContext.js init"
 ```
 
-This creates a command named `sign`, which will be used as `npm run sign`. It uses [make-runnable](https://github.com/super-cache-money/make-runnable) to allow a `node [path-to-file] [name-of-function] [parameters-to-pass]` syntax, so the above `node ./src/utils/signAndCertify.js init` is pointing to a function named `init()` (with no parameters) inside the `signAndCertify.js` file.
+This creates a command named `sign`, which will be used as `npm run sign`. It uses [make-runnable](https://github.com/super-cache-money/make-runnable) to allow a `node [path-to-file] [name-of-function] [parameters-to-pass]` syntax, so the above `node ./src/utils/dev/signAndCertify.js init` is pointing to a function named `init()` (with no parameters) inside the `signAndCertify.js` file. Same for `switch`!
 
-> See the above in [this repo's own package.json](https://github.com/Inventsable/CEP-Self-Signing-Panel/blob/master/package.json)
+> You can see the above in action within [this repo's own package.json](https://github.com/Inventsable/CEP-Self-Signing-Panel/blob/master/package.json)
 
-### 3. Copy [the signAndCertify.js file from this repo](https://github.com/Inventsable/CEP-Self-Signing-Panel/blob/master/src/utils/signAndCertify.js) to the same path as your command above
+### 3. Copy [the ./src/utils/dev folder from this repo](https://github.com/Inventsable/CEP-Self-Signing-Panel/blob/master/src/utils/signAndCertify.js) to the same path (or adjust for your own paths)
 
 ### 4. You must have ZXPSignCmd.exe within the parent folder of your extension
 
@@ -44,9 +45,9 @@ npm install
 npm run sign
 ```
 
-## What does it do?
+## What does they do?
 
-### This command will:
+### `npm run sign` will:
 
 - Duplicate and "stage" an extension folder to a temporary location, removing any hidden files or folders to ensure the certificate doesn't silently fail.
 - Generate a temporary certificate
@@ -54,3 +55,10 @@ npm run sign
 - Check the validation of the signed duplicate
 - Place the resulting `[name][version].zxp` into `./archive` of your current panel (and create this folder if it doesn't already exist). If `[name][version].zxp` already exists, overwrite it.
 - Delete the duplicate directory
+
+### `npm run switch` will:
+
+- Report whether the manifest is currently prepped for `PRODUCTION` or `DEVELOPER` context.
+- Prompt the user if they'd like to switch contexts.
+- If switching contexts, automatically adjusts `manifest.xml` for you (no need to manually open it and switch every time)
+- Prompt with contextual information about the next steps once the confirmation is made.

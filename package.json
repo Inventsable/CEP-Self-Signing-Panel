@@ -5,9 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "sign": "node ./src/utils/signAndCertify.js init"
+    "sign": "node ./src/utils/dev/signAndCertify.js init",
+    "switch": "node ./src/utils/dev/switchContext.js init"
   },
   "dependencies": {
+    "types-for-adobe": "github:pravdomil/types-for-adobe",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-service": "^3.8.0",
+    "vue-template-compiler": "^2.6.10",
     "boxen": "^4.1.0",
     "chalk": "^2.4.2",
     "core-js": "^2.6.5",
@@ -15,14 +23,7 @@
     "inquirer": "^6.4.1",
     "make-runnable": "^1.3.6",
     "ora": "^3.4.0",
-    "shelljs": "^0.8.3",
-    "types-for-adobe": "github:pravdomil/types-for-adobe",
-    "vue": "^2.6.10"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.8.0",
-    "@vue/cli-service": "^3.8.0",
-    "vue-template-compiler": "^2.6.10"
+    "shelljs": "^0.8.3"
   },
   "postcss": {
     "plugins": {
