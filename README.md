@@ -45,7 +45,7 @@ npm install
 npm run sign
 ```
 
-## What does they do?
+## What do they do?
 
 ### `npm run sign` will:
 
@@ -63,4 +63,4 @@ npm run sign
 - If switching contexts, automatically adjusts `manifest.xml` for you (no need to manually open it and switch every time)
 - Prompt with contextual information about the next steps once the confirmation is made.
 
-![](https://thumbs.gfycat.com/WetCrazyGuppy-size_restricted.gif)
+![](https://thumbs.gfycat.com/AnimatedCaringAardwolf-size_restricted.gif)

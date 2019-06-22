@@ -137,12 +137,12 @@ function switchContext() {
       xml = xml.replace(isDev, buildString);
       xml = xml.replace(isBuildVanilla, commentedDevString);
       fs.writeFileSync(`./CSXS/manifest.xml`, xml);
-      resolve("DEVELOPER");
+      resolve("PRODUCTION");
     } else if (isBuild.test(xml)) {
       xml = xml.replace(isBuild, devString);
       xml = xml.replace(isDevVanilla, commentedBuildString);
       fs.writeFileSync(`./CSXS/manifest.xml`, xml);
-      resolve("PRODUCTION");
+      resolve("DEVELOPER");
     } else {
       console.log("Whoops! Something went wrong.");
     }
