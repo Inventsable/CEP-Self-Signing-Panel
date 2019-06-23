@@ -134,9 +134,14 @@ function getExtVersion() {
 
 function getExtName() {
   const xml = fs.readFileSync(`./CSXS/manifest.xml`, { encoding: "utf-8" });
-  const bundleVersion = /Menu\>\w*(?=\<)/;
+  const bundleVersion = /Menu\>.*(?=\<)/;
   const matches = xml.match(bundleVersion);
-  return matches.length ? matches[0].replace(/Menu\>/, "") : "Unknown";
+  return matches.length
+    ? matches[0]
+        .replace(/Menu\>/, "")
+        .split(" ")
+        .join("-")
+    : "Unknown";
 }
 
 function stageExtensionFolder(extString) {
