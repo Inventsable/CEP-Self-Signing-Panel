@@ -23,15 +23,16 @@
 ### 2. We create custom tasks by pasting this into the `scripts` section of your `package.json`:
 
 ```json
-    "sign": "node ./src/utils/dev/signAndCertify.js init",
-    "switch": "node ./src/utils/dev/switchContext.js init"
+    "sign": "node ./src/utils/dev/npmCommands.js sign",
+    "switch": "node ./src/utils/dev/npmCommands.js switch",
+    "update": "node ./src/utils/dev/npmCommands.js update"
 ```
 
-This creates a command named `sign`, which will be used as `npm run sign`. It uses [make-runnable](https://github.com/super-cache-money/make-runnable) to allow a `node [path-to-file] [name-of-function] [parameters-to-pass]` syntax, so the above `node ./src/utils/dev/signAndCertify.js init` is pointing to a function named `init()` (with no parameters) inside the `signAndCertify.js` file. Same for `switch`!
+This creates a command named `sign`, which will be used as `npm run sign`. It uses [make-runnable](https://github.com/super-cache-money/make-runnable) to allow a `node [path-to-file] [name-of-function] [parameters-to-pass]` syntax, so the above `node ./src/utils/dev/npmCommands.js sign` is pointing to a function named `sign()` (with no parameters) inside the `npmCommands.js` file. Same for `switch` and `update`!
 
 > You can see the above in action within [this repo's own package.json](https://github.com/Inventsable/CEP-Self-Signing-Panel/blob/master/package.json)
 
-### 3. Copy [the ./src/utils/dev folder from this repo](https://github.com/Inventsable/CEP-Self-Signing-Panel/tree/master/src/utils/dev) to the same path (or copy files and adjust package.json for your own paths)
+### 3. Copy [the ./src/utils/dev folder from this repo](https://github.com/Inventsable/CEP-Self-Signing-Panel/tree/master/src/utils/dev) to the same path (or copy the `npmCommands.js` file and adjust `package.json` to your own paths)
 
 ### 4. You must have ZXPSignCmd.exe within the parent folder of your extension
 
@@ -64,3 +65,10 @@ npm run sign
 - Prompt with contextual information about the next steps once the confirmation is made.
 
 ![](https://thumbs.gfycat.com/AnimatedCaringAardwolf-size_restricted.gif)
+
+### `npm run update` will:
+
+- Report the current version of the panel.
+- Prompt the user to update the MAJOR, MINOR, or MICRO tier.
+- Auto-suggest the update and allow the user to place any number
+- Rewrite the version number within `manifest.xml` with the updated semantic version.

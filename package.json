@@ -5,8 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "sign": "node ./src/utils/dev/signAndCertify.js init",
-    "switch": "node ./src/utils/dev/switchContext.js init"
+    "sign": "node ./src/utils/dev/npmCommands.js sign",
+    "switch": "node ./src/utils/dev/npmCommands.js switch",
+    "update": "node ./src/utils/dev/npmCommands.js update"
   },
   "dependencies": {
     "types-for-adobe": "github:pravdomil/types-for-adobe",
