@@ -7,7 +7,9 @@
     "build": "vue-cli-service build",
     "sign": "node ./src/utils/dev/npmCommands.js sign",
     "switch": "node ./src/utils/dev/npmCommands.js switch",
-    "update": "node ./src/utils/dev/npmCommands.js update"
+    "update": "node ./src/utils/dev/npmCommands.js update",
+    "register": "node ./src/utils/dev/npmCommands.js register",
+    "help": "node ./src/utils/dev/npmCommands.js help"
   },
   "dependencies": {
     "types-for-adobe": "github:pravdomil/types-for-adobe",

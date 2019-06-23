@@ -5,7 +5,7 @@
 > (node package coming soon!)
 > ![](https://thumbs.gfycat.com/GrimyGreatChimneyswift-size_restricted.gif)
 
-## Adding this functionality to your own panel
+## Adding this functionality to your own panel (skip if a template from cep-vue-cli made after 6/23/19)
 
 ### 1. Copy and paste the following into your `package.json` under `devDependencies`:
 
@@ -25,14 +25,16 @@
 ```json
     "sign": "node ./src/utils/dev/npmCommands.js sign",
     "switch": "node ./src/utils/dev/npmCommands.js switch",
-    "update": "node ./src/utils/dev/npmCommands.js update"
+    "update": "node ./src/utils/dev/npmCommands.js update",
+    "register": "node ./src/utils/dev/npmCommands.js register",
+    "help": "node ./src/utils/dev/npmCommands.js help"
 ```
 
 This creates a command named `sign`, which will be used as `npm run sign`. It uses [make-runnable](https://github.com/super-cache-money/make-runnable) to allow a `node [path-to-file] [name-of-function] [parameters-to-pass]` syntax, so the above `node ./src/utils/dev/npmCommands.js sign` is pointing to a function named `sign()` (with no parameters) inside the `npmCommands.js` file. Same for `switch` and `update`!
 
 > You can see the above in action within [this repo's own package.json](https://github.com/Inventsable/CEP-Self-Signing-Panel/blob/master/package.json)
 
-### 3. Copy [the ./src/utils/dev folder from this repo](https://github.com/Inventsable/CEP-Self-Signing-Panel/tree/master/src/utils/dev) to the same path (or copy the `npmCommands.js` file and adjust `package.json` to your own paths)
+### 3. Copy [the ./src/utils/dev folder from this repo](https://github.com/Inventsable/CEP-Self-Signing-Panel/tree/master/src/utils/dev) to the same path. Path must be exact as it generates config files after first use.
 
 ### 4. You must have [ZXPSignCmd.exe](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/4.0.7) within the parent folder of your extension
 
@@ -47,6 +49,10 @@ npm run sign
 ```
 
 ## What do they do?
+
+### `npm run help` will:
+
+- Prompt a full list of commands of the panel including the ones below
 
 ### `npm run sign` will:
 
@@ -66,7 +72,7 @@ npm run sign
 - If switching contexts, automatically adjusts `manifest.xml` for you (no need to manually open it and switch every time)
 - Prompt with contextual information about the next steps once the confirmation is made
 
-![](https://thumbs.gfycat.com/FaithfulInsidiousBighorn-size_restricted.gif)
+![]()
 
 ### `npm run update` will:
 
@@ -75,4 +81,10 @@ npm run sign
 - Auto-suggest the update as the next sequential number but allow any number to be entered
 - Rewrite the version number within `manifest.xml` with the updated semantic version
 
-![](https://thumbs.gfycat.com/ClearSnivelingGoldeneye-size_restricted.gif)
+![]()
+
+### `npm run register` will:
+
+- Report the current string of text to use for `npm run sign` certification
+- Prompt the user to update the MAJOR, MINOR, or MICRO tier
+- Write a new file (or overwrite previous) containing country, locale, organization and user

@@ -32,24 +32,152 @@ const ORA_SPINNER = {
   ]
 };
 
+const cepBlock = `${chalk.black.bgBlue(" CEP ")}`;
+const helpPrompt = `${cepBlock} 😅   Didn't mean to do that? Use ${chalk.yellow(
+  "npm run help"
+)} to see a full list of commands`;
+
 module.exports = {
+  ignore: async function() {
+    let ignores;
+  },
+  help: async function() {
+    const extVersion = getExtVersion();
+    const extName = getExtName();
+    console.log("   Welcome! You can run these commands at any time:");
+    console.log("");
+    console.log(
+      `${chalk.black.bgGreen(" VUE ")} ${chalk.yellow(
+        "npm run serve"
+      )} — Run the development server (${chalk.green("DEVELOPER")})`
+    );
+    console.log(
+      `${chalk.black.bgGreen(" VUE ")} ${chalk.yellow(
+        "npm run build"
+      )} — Compile to ./dist/ directory (${chalk.green("PRODUCTION")})`
+    );
+    console.log(
+      `${cepBlock} ${chalk.yellow(
+        "npm run switch"
+      )} — Switch between ${chalk.green("DEVELOPER")} and ${chalk.green(
+        "PRODUCTION"
+      )}`
+    );
+    console.log(
+      `${cepBlock} ${chalk.yellow(
+        "npm run update"
+      )} — Update the panel's version`
+    );
+    console.log(
+      `${cepBlock} ${chalk.yellow(
+        "npm run register"
+      )} — Register the info to be used in ${chalk.yellow("npm run sign")}`
+    );
+    console.log(
+      `${cepBlock} ${chalk.yellow(
+        "npm run sign"
+      )} — Stage, sign and certify panel to produce ${chalk.green(
+        `${extName}${extVersion}.zxp`
+      )} in ${chalk.green("./archive")}`
+    );
+    console.log("");
+    console.log(
+      `   - Documentation per template can be found at the generator repo here:`
+    );
+    console.log(
+      `     ${chalk.blue(
+        "https://github.com/Inventsable/generator-cep-vue-cli#templates"
+      )}`
+    );
+    console.log("");
+    console.log(
+      `   - An outline of what each command above does can be found here:`
+    );
+    console.log(
+      `     ${chalk.blue(
+        "https://github.com/Inventsable/CEP-Self-Signing-Panel#what-do-they-do"
+      )}`
+    );
+    return "";
+  },
+  register: async function() {
+    console.log(`${helpPrompt}`);
+    console.log(``);
+    let user = shell.exec("git config user.name", { silent: true }).stdout;
+    user = user.replace(" ", "-").trim();
+    let certInfo;
+    if (fs.existsSync(`./src/utils/dev/certInfo.txt`)) {
+      certInfo = fs.readFileSync(`./src/utils/dev/certInfo.txt`, {
+        encoding: "utf-8"
+      });
+      console.log(
+        `${cepBlock}  Current string for certs is ${chalk.green(
+          certInfo.split(";").join(" ")
+        )}`
+      );
+      console.log("");
+    } else {
+      certInfo = "US;NY;SomeOrg";
+      console.log(
+        `${chalk.red(
+          "✘ "
+        )} No user data was found! It will default to ${chalk.green(
+          certInfo.split(";").join(" ")
+        )}`
+      );
+    }
+    certInfo = certInfo.split(";");
+    if (certInfo.length < 4) certInfo = [].concat(certInfo, [user]);
+    promptRegister(certInfo).then(answer => {
+      let fulldetails = [answer.country, answer.state, answer.org, answer.name];
+      let finaldetails = fulldetails.map(ans => {
+        return /\s/.test(ans) ? ans.split(" ").join("-") : ans;
+      });
+      fs.writeFileSync(`./src/utils/dev/certInfo.txt`, finaldetails.join(";"));
+      console.log("");
+      console.log(
+        `   ${chalk.green("✔ ")} Config has been saved to ${chalk.green(
+          "./src/utils/dev/certInfo.txt"
+        )}`
+      );
+      console.log(
+        `   👍  Self-signed certificates via ${chalk.yellow(
+          "npm run sign"
+        )} will use this data!`
+      );
+      console.log("");
+    });
+  },
   sign: async function() {
+    console.log(`${helpPrompt}`);
+    console.log(``);
     // gathering data
     const extVersion = getExtVersion();
     const extName = getExtName();
     const extString = `${extName}${extVersion}`;
-    let user = shell.exec("git config user.name", { silent: true }).stdout;
+
     shell.config.silent = true;
     let pwd = shell.pwd();
     const rootDir = pwd.match(/[^\\|\/]*$/)[0];
     shell.config.silent = false;
-    user = user.replace(" ", "-").trim();
 
     // beginning the prompts
-    console.log(`🤘   Signing ${extString}...`);
+
+    console.log(`${cepBlock}  🤘  Signing ${extString}!`);
+    console.log("");
+    console.log(
+      `   Be sure to run ${chalk.yellow(
+        "npm run register"
+      )} prior to this command.`
+    );
+    console.log(
+      `   You can add any valid regex or phrases to ${chalk.green(
+        "./src/utils/dev/.certignore"
+      )} to exclude them from staging.`
+    );
     console.log("");
 
-    promptUser(user).then(answer => {
+    promptUser().then(answer => {
       let spinner = ora({
         text: `Staging temp files...`,
         spinner: ORA_SPINNER
@@ -64,67 +192,58 @@ module.exports = {
           spinner: ORA_SPINNER
         }).start();
         setTimeout(() => {
-          signCommands(
-            res,
-            rootDir,
-            answer.username,
-            answer.password,
-            answer.createZip
-          ).then(() => {
-            console.log("");
-            spinner.stopAndPersist({
-              symbol: chalk.green("   ✔"),
-              text: `Signing is complete.`
-            });
-            fse.removeSync(`./${extString}-tmp`);
-            fse.removeSync(`./${rootDir}/archive/temp1.p12`);
-            console.log(
-              boxen(`${extString}.zxp is ready!`, {
-                ...BOXEN_OPTS,
-                ...{
-                  borderColor: "blue"
-                }
-              })
-            );
-            console.log(
-              `   👍  You can find it in ${chalk.green(
-                `./archive/${extString}.zxp`
-              )}`
-            );
-            console.log("");
-          });
+          signCommands(res, rootDir, answer.password, answer.createZip).then(
+            () => {
+              console.log("");
+              spinner.stopAndPersist({
+                symbol: chalk.green("   ✔"),
+                text: `Signing is complete.`
+              });
+              fse.removeSync(`./${extString}-tmp`);
+              // fse.removeSync(`./${rootDir}/archive/temp1.p12`);
+              console.log(
+                boxen(`${extString}.zxp is ready!`, {
+                  ...BOXEN_OPTS,
+                  ...{
+                    borderColor: "blue"
+                  }
+                })
+              );
+              console.log(
+                `   👍  You can find it in ${chalk.green(
+                  `./archive/${extString}.zxp`
+                )}`
+              );
+              console.log("");
+            }
+          );
         }, 1000);
       });
     });
     return "";
   },
   switch: async function() {
+    console.log(`${helpPrompt}`);
+    console.log(``);
     const extVersion = getExtVersion();
     const extName = getExtName();
     const extString = `${extName}${extVersion}`;
 
     let isDev = await getCurrentContext();
     console.log(
-      boxen(
-        `${extString} is in ${chalk.blue(
-          `${isDev ? "DEVELOPER" : "PRODUCTION"}`
-        )}`,
-        {
-          ...BOXEN_OPTS,
-          ...{
-            borderColor: "white"
-          }
-        }
-      )
+      `${cepBlock}  ${extString} is in ${chalk.blue(
+        `${isDev ? "DEVELOPER" : "PRODUCTION"}`
+      )}`
     );
+    console.log("");
     await inquirer
       .prompt([
         {
           type: "confirm",
           name: "shouldSwitch",
-          message: `Would you like to switch it to ${chalk.blue(
+          message: `Would you like to switch to ${chalk.blue(
             `${!isDev ? "DEVELOPER" : "PRODUCTION"}`
-          )}`,
+          )}?`,
           default: true
         }
       ])
@@ -140,7 +259,7 @@ module.exports = {
                   }
                 })
               );
-              console.log(`${chalk.green("✔ ")} Switch successful!`);
+              console.log(`   ${chalk.green("✔ ")} Switch successful!`);
               endMessage(true);
             })
             .catch(err => {
@@ -154,7 +273,8 @@ module.exports = {
               return null;
             });
         else {
-          console.log(`👍  All right!`);
+          console.log("");
+          console.log(`   👍  All right! No changes have been made.`);
           endMessage();
         }
       })
@@ -165,17 +285,14 @@ module.exports = {
     return "";
   },
   update: async function() {
+    console.log(`${helpPrompt}`);
     const extVersion = getExtVersion();
     const extName = getExtName();
-
+    console.log("");
     console.log(
-      boxen(`${extName} is currently ${chalk.green(`v${extVersion}`)}`, {
-        ...BOXEN_OPTS,
-        ...{
-          borderColor: "white"
-        }
-      })
+      `${cepBlock}  ${extName} is currently ${chalk.green(`v${extVersion}`)}`
     );
+    console.log("");
     await inquirer
       .prompt([
         {
@@ -206,7 +323,8 @@ module.exports = {
             });
           });
         } else {
-          console.log(`👍  All right! No changes will be made.`);
+          console.log("");
+          console.log(`   👍  All right! No changes will be made.`);
           endMessage();
         }
       })
@@ -241,7 +359,7 @@ function getExtName() {
 
 // SIGN
 //
-async function promptUser(user) {
+async function promptUser() {
   return await inquirer.prompt([
     {
       type: "input",
@@ -250,18 +368,34 @@ async function promptUser(user) {
       default: "hello-world"
     },
     {
-      type: "input",
-      name: "username",
-      message: "User name",
-      default: user
-    },
-    {
       type: "confirm",
       name: "createZip",
       message: "Create a ZIP aswell?",
       default: true
     }
   ]);
+}
+
+function getIgnores() {
+  if (fs.existsSync(`./src/utils/dev/.certignore`)) {
+    ignores = fs.readFileSync(`./src/utils/dev/.certignore`, {
+      encoding: "utf-8"
+    });
+    ignores = ignores.trim().split(/(\r\n|\n|\r)/);
+    ignores = ignores.filter(item => {
+      return item.length > 2;
+    });
+    ignores = ignores.map(item => {
+      return item.replace(
+        /[-\/\\^$*+?.()|[\]{}]/,
+        `\\${item.match(/[-\/\\^$*+?.()|[\]{}]/)}`
+      );
+    });
+  } else {
+    ignores = ["node_modules", "archive", "^(\\.git)"];
+    fs.writeFileSync(`./src/utils/dev/.certignore`, ignores.join("\r\n"));
+  }
+  return new RegExp(ignores.join("|"));
 }
 
 async function confirmSign() {
@@ -278,10 +412,11 @@ async function confirmSign() {
 function stageExtensionFolder(extString) {
   return new Promise((resolve, reject) => {
     let tempdir = [];
+    let omitted = getIgnores();
     fs.readdir("./", (err, list) => {
       if (err) reject("Error encountered while reading directory for staging.");
       list.forEach(filename => {
-        if (!/^(\.git)|(node\_modules)|(archive)/.test(filename)) {
+        if (!omitted.test(filename)) {
           if (filename) tempdir.push(filename);
         }
       });
@@ -303,15 +438,27 @@ function stageExtensionFolder(extString) {
   });
 }
 
-function signCommands(path, rootpath, username, password, includeZip) {
+function signCommands(path, rootpath, password, includeZip) {
   return new Promise((resolve, reject) => {
+    let certInfo;
+    if (fs.existsSync(`./src/utils/dev/certInfo.txt`)) {
+      certInfo = fs.readFileSync(`./src/utils/dev/certInfo.txt`, {
+        encoding: "utf-8"
+      });
+    } else {
+      certInfo = "US;NY;SomeOrg";
+    }
+    certInfo = certInfo.split(";");
     shell.cd(`..`);
-    // shell.exec(`ZXPSignCmd`);
     console.log(
-      `ZXPSignCmd -selfSignedCert US AZ battleaxe ${username} ${password} ./${rootpath}/archive/temp1.p12`
+      `ZXPSignCmd -selfSignedCert ${certInfo[0]} ${certInfo[1]} ${
+        certInfo[2]
+      } ${certInfo[3]} ${password} ./${rootpath}/archive/temp1.p12`
     );
     shell.exec(
-      `ZXPSignCmd -selfSignedCert US AZ battleaxe ${username} ${password} ./${rootpath}/archive/temp1.p12`
+      `ZXPSignCmd -selfSignedCert ${certInfo[0]} ${certInfo[1]} ${
+        certInfo[2]
+      } ${certInfo[3]} ${password} ./${rootpath}/archive/temp1.p12`
     );
     setTimeout(() => {
       console.log(
@@ -351,15 +498,15 @@ async function endMessage(switched = false) {
   let finalstate = await getCurrentContext();
   if (finalstate)
     console.log(
-      `Run ${chalk.yellow("npm run serve")} ${
+      `   ${chalk.blue("DEVELOPER")}: Use ${chalk.yellow("npm run serve")} ${
         switched ? "and restart the app to continue developing" : "to continue"
       }.`
     );
   else
     console.log(
-      `Ready for ${chalk.yellow("npm run build")} or ${chalk.yellow(
-        "npm run sign"
-      )}.`
+      `   ${chalk.blue("PRODUCTION")}: Ready for ${chalk.yellow(
+        "npm run build"
+      )} or ${chalk.yellow("npm run sign")}.`
     );
 }
 
@@ -445,6 +592,38 @@ function setExtVersion(older, newer) {
     fs.writeFileSync(`./CSXS/manifest.xml`, xml);
     resolve(newer.join("."));
   });
+}
+//  -----------------------------------
+
+// REGISTER
+//
+async function promptRegister(data) {
+  return await inquirer.prompt([
+    {
+      type: "input",
+      name: "country",
+      message: "Country Code",
+      default: data[0]
+    },
+    {
+      type: "input",
+      name: "state",
+      message: "State or Province",
+      default: data[1]
+    },
+    {
+      type: "input",
+      name: "org",
+      message: "Organization",
+      default: data[2]
+    },
+    {
+      type: "input",
+      name: "name",
+      message: "Common name",
+      default: data[3]
+    }
+  ]);
 }
 //  -----------------------------------
 
