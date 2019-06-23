@@ -447,7 +447,8 @@ function signCommands(path, rootpath, password, includeZip) {
         encoding: "utf-8"
       });
     } else {
-      certInfo = "US;NY;SomeOrg";
+      certInfo = "US;NY;SomeOrg;SomeName";
+      fs.writeFileSync(`./src/utils/dev/certInfo.txt`, certInfo);
     }
     certInfo = certInfo.split(";");
     shell.cd(`..`);

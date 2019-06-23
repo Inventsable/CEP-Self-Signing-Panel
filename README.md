@@ -2,7 +2,7 @@
 
 ## This panel can stage, sign and certify itself in a single command:
 
-> ![](https://thumbs.gfycat.com/AcidicTiredLhasaapso-size_restricted.gif)
+> ![](https://thumbs.gfycat.com/SomeRequiredBordercollie-size_restricted.gif)
 
 ## Adding this functionality to your own panel (skip if a template from cep-vue-cli made after 6/23/19)
 
