@@ -43,8 +43,8 @@ If you're currently developing a panel whose path is `.../appData/Roaming/Adobe/
 # Now re-run npm install
 npm install
 
-# Now try your new task
-npm run sign
+# Now try your new tasks! Starting with 'help' will give a full outline:
+npm run help
 ```
 
 ## What do they do?
