@@ -200,7 +200,7 @@ module.exports = {
                 text: `Signing is complete.`
               });
               fse.removeSync(`./${extString}-tmp`);
-              // fse.removeSync(`./${rootDir}/archive/temp1.p12`);
+              fse.removeSync(`./${rootDir}/archive/temp1.p12`);
               console.log(
                 boxen(`${extString}.zxp is ready!`, {
                   ...BOXEN_OPTS,
