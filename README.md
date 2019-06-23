@@ -2,8 +2,7 @@
 
 ## This panel can stage, sign and certify itself in a single command:
 
-> (node package coming soon!)
-> ![](https://thumbs.gfycat.com/GrimyGreatChimneyswift-size_restricted.gif)
+> ![](https://thumbs.gfycat.com/AcidicTiredLhasaapso-size_restricted.gif)
 
 ## Adding this functionality to your own panel (skip if a template from cep-vue-cli made after 6/23/19)
 
@@ -72,7 +71,7 @@ npm run sign
 - If switching contexts, automatically adjusts `manifest.xml` for you (no need to manually open it and switch every time)
 - Prompt with contextual information about the next steps once the confirmation is made
 
-![]()
+![](https://thumbs.gfycat.com/FrankDeadAardwolf-size_restricted.gif)
 
 ### `npm run update` will:
 
@@ -81,7 +80,7 @@ npm run sign
 - Auto-suggest the update as the next sequential number but allow any number to be entered
 - Rewrite the version number within `manifest.xml` with the updated semantic version
 
-![]()
+![](https://thumbs.gfycat.com/SlimyAssuredAchillestang-size_restricted.gif)
 
 ### `npm run register` will:
 
