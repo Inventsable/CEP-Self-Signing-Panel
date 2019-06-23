@@ -3,7 +3,7 @@
 ## This panel can stage, sign and certify itself in a single command:
 
 > (node package coming soon!)
-> ![](https://thumbs.gfycat.com/KaleidoscopicConsciousIberiannase-size_restricted.gif)
+> ![](https://thumbs.gfycat.com/GrimyGreatChimneyswift-size_restricted.gif)
 
 ## Adding this functionality to your own panel
 
@@ -50,25 +50,27 @@ npm run sign
 
 ### `npm run sign` will:
 
-- Duplicate and "stage" an extension folder to a temporary location, removing any hidden files or folders to ensure the certificate doesn't silently fail.
+- Duplicate and "stage" an extension folder to a temporary location, removing any hidden files or folders to ensure the certificate doesn't silently fail
 - Generate a temporary certificate
 - Sign the duplicate with the certificate
 - Check the validation of the signed duplicate
-- Place the resulting `[name][version].zxp` into `./archive` of your current panel (and create this folder if it doesn't already exist). If `[name][version].zxp` already exists, overwrite it.
+- Place the resulting `[name][version].zxp` into `./archive` of your current panel (and create this folder if it doesn't already exist). If `[name][version].zxp` already exists, overwrite it
 - Delete the duplicate directory
 
 ### `npm run switch` will:
 
 - Report whether the manifest is currently prepped for `PRODUCTION` or `DEVELOPER` context.
-- Prompt the user if they'd like to switch contexts.
+- Prompt the user if they'd like to switch contexts
 - If switching contexts, automatically adjusts `manifest.xml` for you (no need to manually open it and switch every time)
-- Prompt with contextual information about the next steps once the confirmation is made.
+- Prompt with contextual information about the next steps once the confirmation is made
 
-![](https://thumbs.gfycat.com/AnimatedCaringAardwolf-size_restricted.gif)
+![](https://thumbs.gfycat.com/FaithfulInsidiousBighorn-size_restricted.gif)
 
 ### `npm run update` will:
 
-- Report the current version of the panel.
-- Prompt the user to update the MAJOR, MINOR, or MICRO tier.
-- Auto-suggest the update and allow the user to place any number
-- Rewrite the version number within `manifest.xml` with the updated semantic version.
+- Report the current version of the panel
+- Prompt the user to update the MAJOR, MINOR, or MICRO tier
+- Auto-suggest the update as the next sequential number but allow any number to be entered
+- Rewrite the version number within `manifest.xml` with the updated semantic version
+
+![](https://thumbs.gfycat.com/ClearSnivelingGoldeneye-size_restricted.gif)
