@@ -592,6 +592,13 @@ function setExtVersion(older, newer) {
     let rx = new RegExp(`${older.split(".").join("\\.")}`);
     xml = xml.split(rx).join(newer.join("."));
     fs.writeFileSync(`./CSXS/manifest.xml`, xml);
+
+    let jsondata = fs.readFileSync("./package.json", { encoding: "utf-8" });
+    let jsonrx = /\"version\"\:\s\"[^\"]*/;
+    jsondata = jsondata
+      .split(jsonrx)
+      .join(`\"version\"\: \"${newer.join(".")}`);
+    fs.writeFileSync(`./package.json`, jsondata);
     resolve(newer.join("."));
   });
 }
