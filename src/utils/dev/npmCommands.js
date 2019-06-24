@@ -54,7 +54,9 @@ module.exports = {
     console.log(
       `${chalk.black.bgGreen(" VUE ")} ${chalk.yellow(
         "npm run build"
-      )} — Compile to ./dist/ directory (${chalk.blue("PRODUCTION")})`
+      )} — Compile to ${chalk.green("./dist/")} directory (${chalk.blue(
+        "PRODUCTION"
+      )})`
     );
     console.log(
       `${cepBlock} ${chalk.yellow(
