@@ -91,7 +91,12 @@ module.exports = {
     );
     console.log("");
     console.log(
-      `   - An outline of what each command above does can be found here:`
+      `   - An outline of how to use this workflow and what each command does can be found here:`
+    );
+    console.log(
+      `     ${chalk.blue(
+        "https://github.com/Inventsable/CEP-Self-Signing-Panel#usage"
+      )}`
     );
     console.log(
       `     ${chalk.blue(
@@ -290,7 +295,9 @@ module.exports = {
     const extName = getExtName();
     console.log("");
     console.log(
-      `${cepBlock}  ${extName} is currently ${chalk.green(`v${extVersion}`)}`
+      `${cepBlock}  ${chalk.green(extName)} is currently ${chalk.green(
+        `v${extVersion}`
+      )}`
     );
     console.log("");
     await inquirer
@@ -313,12 +320,17 @@ module.exports = {
                 console.log("");
                 console.log(`   ${chalk.green("✔ ")} Update successful!`);
                 console.log(
-                  boxen(`${extName} updated to ${chalk.green(`v${updated}`)}`, {
-                    ...BOXEN_OPTS,
-                    ...{
-                      borderColor: "green"
+                  boxen(
+                    `${chalk.green(extName)} updated to ${chalk.green(
+                      `v${updated}`
+                    )}`,
+                    {
+                      ...BOXEN_OPTS,
+                      ...{
+                        borderColor: "green"
+                      }
                     }
-                  })
+                  )
                 );
               });
             });
