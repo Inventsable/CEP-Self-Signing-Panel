@@ -4,6 +4,8 @@
 
 > ![](https://thumbs.gfycat.com/SomeRequiredBordercollie-size_restricted.gif)
 
+## [> Skip to Usage](#usage)
+
 ## Adding this functionality to your own panel (skip to #5 if a template from cep-vue-cli made after 6/23/19)
 
 ### 1. Copy and paste the following into your `package.json` under `devDependencies`:
@@ -87,5 +89,21 @@ If you're currently developing a panel whose path is `.../appData/Roaming/Adobe/
 ### `npm run register` will:
 
 - Report the current string of text to use for `npm run sign` certification
-- Prompt the user to update the MAJOR, MINOR, or MICRO tier
+- Prompt the user for COUNTRY, STATE/LOCALE, ORGANIZATION, and COMMON NAME
 - Write a new file (or overwrite previous) containing country, locale, organization and user
+
+## Usage
+
+When you first have created the template or need to start coding, you need `npm run serve` to launch the dev server and see your code reflect in the panel. If you want to build and sign an extension, then at any time you do so by running:
+
+- `npm run build` - This builds/compiles/gulps everything to the ./dist directory
+- `npm run switch` - This changes your manifest.xml file to point to the newly created ./dist/index.html compiled in the previous step. **Without this step, the ZXP will be pointing to a localhost which doesn't exist**
+- `npm run sign` - This stages, signs, and certifies the panel to create a deliverable ready for any one's use. **Note that if you want the certification info to be correct**, you must run `npm run register` at least once to fill out your own data (otherwise dummy data is used).
+
+To continue development:
+
+- `npm run switch` - Change the manifest.xml back to the localhost for hot reloading
+- `npm run update` **[OPTIONAL]** - To avoid losing or overwriting previous code, it's a good idea to update the version after every `npm run sign`. This allows us to easily keep track of deliverables and stages, and hand off guaranteed deliverables without mixing them up.
+- `npm run serve` - Restart the development server and continue coding
+
+A one-step or odd number shift (`developer` > `production` or vice versa) requires you restart the host application. A two-step or even number shift (`developer` > `production` > `developer`) requires only that you refresh the panel. This is because `manifest.xml` only reads once at the host app's launch, so switching it's entry point to change between `production` and `developer` will not be detected by the host app.
