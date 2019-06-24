@@ -49,17 +49,17 @@ module.exports = {
     console.log(
       `${chalk.black.bgGreen(" VUE ")} ${chalk.yellow(
         "npm run serve"
-      )} — Run the development server (${chalk.green("DEVELOPER")})`
+      )} — Run the development server (${chalk.blue("DEVELOPER")})`
     );
     console.log(
       `${chalk.black.bgGreen(" VUE ")} ${chalk.yellow(
         "npm run build"
-      )} — Compile to ./dist/ directory (${chalk.green("PRODUCTION")})`
+      )} — Compile to ./dist/ directory (${chalk.blue("PRODUCTION")})`
     );
     console.log(
       `${cepBlock} ${chalk.yellow(
         "npm run switch"
-      )} — Switch between ${chalk.green("DEVELOPER")} and ${chalk.green(
+      )} — Switch between ${chalk.blue("DEVELOPER")} and ${chalk.blue(
         "PRODUCTION"
       )}`
     );
@@ -76,9 +76,9 @@ module.exports = {
     console.log(
       `${cepBlock} ${chalk.yellow(
         "npm run sign"
-      )} — Stage, sign and certify panel to produce ${chalk.green(
-        `${extName}${extVersion}.zxp`
-      )} in ${chalk.green("./archive")}`
+      )} — Stage, sign, and certify panel with result as ${chalk.green(
+        `./archive/${extName}${extVersion}.zxp`
+      )}`
     );
     console.log("");
     console.log(
@@ -168,7 +168,7 @@ module.exports = {
 
     // beginning the prompts
 
-    console.log(`${cepBlock}  🤘  Signing ${extString}!`);
+    console.log(`${cepBlock}  🤘  Signing ${chalk.blue(extString)}!`);
     console.log("");
     console.log(
       `   Be sure to run ${chalk.yellow(
@@ -189,7 +189,7 @@ module.exports = {
       }).start();
       stageExtensionFolder(extString).then(res => {
         spinner.stopAndPersist({
-          symbol: chalk.green("   ✔"),
+          symbol: chalk.green("   ✔ "),
           text: `Staging complete.`
         });
         spinner = ora({
@@ -201,13 +201,13 @@ module.exports = {
             () => {
               console.log("");
               spinner.stopAndPersist({
-                symbol: chalk.green("   ✔"),
+                symbol: chalk.green("   ✔ "),
                 text: `Signing is complete.`
               });
               fse.removeSync(`./${extString}-tmp`);
               fse.removeSync(`./${rootDir}/archive/temp1.p12`);
               console.log(
-                boxen(`${extString}.zxp is ready!`, {
+                boxen(`${chalk.blue(`${extString}.zxp`)} is ready!`, {
                   ...BOXEN_OPTS,
                   ...{
                     borderColor: "blue"
@@ -236,7 +236,7 @@ module.exports = {
 
     let isDev = await getCurrentContext();
     console.log(
-      `${cepBlock}  ${extString} is in ${chalk.blue(
+      `${cepBlock}  ${chalk.blue(extString)} is in ${chalk.blue(
         `${isDev ? "DEVELOPER" : "PRODUCTION"}`
       )}`
     );
@@ -295,7 +295,7 @@ module.exports = {
     const extName = getExtName();
     console.log("");
     console.log(
-      `${cepBlock}  ${chalk.green(extName)} is currently ${chalk.green(
+      `${cepBlock}  ${chalk.blue(extName)} is currently ${chalk.green(
         `v${extVersion}`
       )}`
     );
@@ -321,13 +321,13 @@ module.exports = {
                 console.log(`   ${chalk.green("✔ ")} Update successful!`);
                 console.log(
                   boxen(
-                    `${chalk.green(extName)} updated to ${chalk.green(
+                    `${chalk.blue(extName)} updated to ${chalk.green(
                       `v${updated}`
                     )}`,
                     {
                       ...BOXEN_OPTS,
                       ...{
-                        borderColor: "green"
+                        borderColor: "blue"
                       }
                     }
                   )
