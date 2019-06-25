@@ -2,9 +2,10 @@
 <ExtensionList>
     <Extension Id="com.signtest.panel">
         <HostList>
-    <Host Name="ILST" Port="4455" />
-    <Host Name="AEFT" Port="4456" />
-    <Host Name="PHXS" Port="4457" />
+            <Host Name="ILST" Port="4455" />
+            <Host Name="AEFT" Port="4456" />
+            <Host Name="PHXS" Port="4457" />
+            <Host Name="PHXS" Port="4458" />
         </HostList>
     </Extension>
 </ExtensionList>
