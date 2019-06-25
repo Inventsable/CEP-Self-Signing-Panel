@@ -49,7 +49,6 @@ export default {
         this.csInterface.evalScript(
           `fl.runScript(FLfile.platformPathToURI("${path}"))`
         );
-      console.log(`LOADED SCRIPT: ${path}`);
     },
     loadUniversalScripts() {
       // Preloads any script located inside ./src/host/universal

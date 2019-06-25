@@ -14,6 +14,8 @@ const BOXEN_OPTS = {
   borderStyle: "round"
 };
 
+const osPrefix = process.platform === "win32" ? "" : `./`;
+
 // Spinner component for terminal
 const ora = require("ora");
 const ORA_SPINNER = {
@@ -467,35 +469,35 @@ function signCommands(path, rootpath, password, includeZip) {
     certInfo = certInfo.split(";");
     shell.cd(`..`);
     console.log(
-      `ZXPSignCmd -selfSignedCert ${certInfo[0]} ${certInfo[1]} ${
+      `${osPrefix}ZXPSignCmd -selfSignedCert ${certInfo[0]} ${certInfo[1]} ${
         certInfo[2]
       } ${certInfo[3]} ${password} ./${rootpath}/archive/temp1.p12`
     );
     shell.exec(
-      `ZXPSignCmd -selfSignedCert ${certInfo[0]} ${certInfo[1]} ${
+      `${osPrefix}ZXPSignCmd -selfSignedCert ${certInfo[0]} ${certInfo[1]} ${
         certInfo[2]
       } ${certInfo[3]} ${password} ./${rootpath}/archive/temp1.p12`
     );
     setTimeout(() => {
       console.log(
-        `ZXPSignCmd -sign ./${path}-tmp ./${rootpath}/archive/${path}.zxp ./${rootpath}/archive/temp1.p12 ${password} -tsa http://time.certum.pl`
+        `${osPrefix}ZXPSignCmd -sign ./${path}-tmp ./${rootpath}/archive/${path}.zxp ./${rootpath}/archive/temp1.p12 ${password} -tsa http://time.certum.pl`
       );
       shell.exec(
-        `ZXPSignCmd -sign ./${path}-tmp ./${rootpath}/archive/${path}.zxp ./${rootpath}/archive/temp1.p12 ${password} -tsa http://time.certum.pl`
+        `${osPrefix}ZXPSignCmd -sign ./${path}-tmp ./${rootpath}/archive/${path}.zxp ./${rootpath}/archive/temp1.p12 ${password} -tsa http://time.certum.pl`
       );
 
       if (includeZip)
         setTimeout(() => {
           shell.exec(
-            `ZXPSignCmd -sign ./${path}-tmp ./${rootpath}/archive/${path}.zip ./${rootpath}/archive/temp1.p12 ${password} -tsa http://time.certum.pl`
+            `${osPrefix}ZXPSignCmd -sign ./${path}-tmp ./${rootpath}/archive/${path}.zip ./${rootpath}/archive/temp1.p12 ${password} -tsa http://time.certum.pl`
           );
         }, 1000);
       setTimeout(() => {
         console.log(
-          `ZXPSignCmd -verify ./${rootpath}/archive/${path}.zxp -certinfo`
+          `${osPrefix}ZXPSignCmd -verify ./${rootpath}/archive/${path}.zxp -certinfo`
         );
         shell.exec(
-          `ZXPSignCmd -verify ./${rootpath}/archive/${path}.zxp -certinfo`
+          `${osPrefix}ZXPSignCmd -verify ./${rootpath}/archive/${path}.zxp -certinfo`
         );
 
         resolve();
