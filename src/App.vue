@@ -42,15 +42,48 @@ export default {
       this.csInterface.dispatchEvent(event);
     },
     loadScript(path) {
-      this.csInterface.evalScript(`$.evalFile('${path}')`);
+      // Correctly loads a script regardless of whether Animate or regular CEP app
+      if (!/FLPR/.test(this.identity.appName))
+        this.csInterface.evalScript(`$.evalFile('${path}')`);
+      else
+        this.csInterface.evalScript(
+          `fl.runScript(FLfile.platformPathToURI("${path}"))`
+        );
+      console.log(`LOADED SCRIPT: ${path}`);
     },
     loadUniversalScripts() {
-      // Preloads universal scripts and main host script file
-      this.loadScript(`${this.identity.root}/src/host/universal/json2.jsx`);
-      this.loadScript(`${this.identity.root}/src/host/universal/Console.jsx`);
-      this.loadScript(
-        `${this.identity.root}/src/host/${this.identity.appName}/host.jsx`
+      // Preloads any script located inside ./src/host/universal
+      let utilFolder = window.cep.fs.readdir(
+        `${this.identity.root}/src/host/universal/`
       );
+      if (!utilFolder.err) {
+        let valids = utilFolder.data.filter(file => {
+          return /\.(jsx|jsfl)$/.test(file);
+        });
+        valids.forEach(file => {
+          this.loadScript(`${this.identity.root}/src/host/universal/${file}`);
+        });
+      }
+      // Preloads any script located in ./src/host/[appName]/
+      let hostFolder = window.cep.fs.readdir(
+        `${this.identity.root}/src/host/${this.identity.appName}/`
+      );
+      if (!hostFolder.err) {
+        let valids = hostFolder.data.filter(file => {
+          return /\.(jsx|jsfl)$/.test(file);
+        });
+        valids.forEach(file => {
+          this.loadScript(
+            `${this.identity.root}/src/host/${this.identity.appName}/${file}`
+          );
+        });
+      } else {
+        console.log(
+          `${this.identity.root}/src/host/${
+            this.identity.appName
+          } has no valid files or does not exist`
+        );
+      }
     },
     consoler(msg) {
       // Catches all console.log() usage in .jsx files via CSEvent
