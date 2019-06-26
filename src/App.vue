@@ -2,16 +2,25 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <stylizer/>
+    <identity/>
+    <menus/>
   </div>
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
+import stylizer from "./components/main/stylizer";
+import identity from "./components/main/identity";
+import menus from "./components/main/menus";
 
 export default {
   name: "app",
   components: {
-    HelloWorld
+    HelloWorld,
+    stylizer,
+    menus,
+    identity
   },
   data: () => ({
     csInterface: null,
@@ -43,12 +52,17 @@ export default {
     },
     loadScript(path) {
       // Correctly loads a script regardless of whether Animate or regular CEP app
-      if (!/FLPR/.test(this.identity.appName))
-        this.csInterface.evalScript(`$.evalFile('${path}')`);
-      else
-        this.csInterface.evalScript(
-          `fl.runScript(FLfile.platformPathToURI("${path}"))`
-        );
+      try {
+        if (!/FLPR/.test(this.identity.appName))
+          this.csInterface.evalScript(`$.evalFile('${path}')`);
+        else
+          this.csInterface.evalScript(
+            `fl.runScript(FLfile.platformPathToURI("${path}"))`
+          );
+        console.log(`LOADED: ${path}`);
+      } catch (err) {
+        console.log(err);
+      }
     },
     loadUniversalScripts() {
       // Preloads any script located inside ./src/host/universal
@@ -115,7 +129,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: #b2b2b2;
+  margin-top: 20px;
 }
 </style>
